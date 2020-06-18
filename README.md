@@ -194,9 +194,7 @@ It returns a list of all the documents presents in the area and an error if some
 #### Paginating Results
 A user does not want to see all results of a query straight away, rather, you want to show them enough data to fulfil their need and give them the option to request a bit more.
 
-Paginating results enables you to do this, you simply rerun the query starting from where another query ended using the last documentSnapshot in a previous query.
-
-Example using getAtLocation method:
+To enable pagination of results, assign the 'startAfterDocument' field to the last documentSnapshot in a previous query and run the query again when you are ready:
 
 ````swift
 query.searchLimit = 10
