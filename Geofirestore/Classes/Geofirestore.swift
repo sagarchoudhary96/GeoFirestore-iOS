@@ -226,6 +226,11 @@ public class GFSQuery {
      */
     public var searchLimit: Int?
     
+    /**
+     * Enables pagination of results based on the last document returned in the previous query
+     */
+    public var startAfterDocument: DocumentSnapshot?
+    
     internal var locationInfos = [String: GFSQueryLocationInfo]()
     internal var queries = Set<GFGeoHashQuery>()
     internal var handles = [GFGeoHashQuery: GFSGeoHashQueryListener]()
@@ -250,6 +255,9 @@ public class GFSQuery {
         var query = self.geoFirestore.collectionRef.order(by: "g").whereField("g", isGreaterThanOrEqualTo: query.startValue).whereField("g", isLessThanOrEqualTo: query.endValue)
         if let limit = self.searchLimit {
             query = query.limit(to: limit)
+        }
+        if let document = self.startAfterDocument {
+            query = query.start(afterDocument: document)
         }
         return query
     }

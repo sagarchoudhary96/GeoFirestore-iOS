@@ -191,6 +191,32 @@ query.getAtLocation() {
 ````
 It returns a list of all the documents presents in the area and an error if something goes wrong.
 
+#### Paginating Results
+A user does not want to see all results of a query straight away, rather, you want to show them enough data to fulfil their need and give them the option to request a bit more.
+
+To enable pagination of results, assign the 'startAfterDocument' field to the last documentSnapshot in a previous query and run the query again when you are ready:
+
+````swift
+query.searchLimit = 10
+
+query.getAtLocation() {
+    documentSnapshots, err in
+    if let err = err {
+        // Handle error here
+    } else {
+        documentSnapshots.map{print($0.documentID)}
+        
+        // Set startAfterDocument field
+        query.startAfterDocument = documentSnapshots.last
+
+        // Run the query again to get the next batch of documents
+        query.getAtLocation() { ... }
+    }
+}
+````
+
+In this example, the second run of the query will return the next 10 documents after the last document in the first query. To understand more about paging Firestore data, please see the Firestore documentation on paginating data.
+
 #### Updating the query criteria
 
 To update the query criteria you can use the `center` and `radius` properties on
